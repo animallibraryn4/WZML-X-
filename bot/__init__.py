@@ -752,7 +752,10 @@ if ospath.exists('shorteners.txt'):
 if BASE_URL:
     Popen(f"gunicorn web.wserver:app --bind 0.0.0.0:{BASE_URL_PORT} --worker-class gevent", shell=True)
 
-srun(["qbittorrent-nox", "-d", f"--profile={getcwd()}"])
+try:
+    srun(["qbittorrent-nox", "-d", f"--profile={getcwd()}"])
+except FileNotFoundError:
+    print("WARNING: qbittorrent-nox is not installed. Torrent features will not work.")
 if not ospath.exists('.netrc'):
     with open('.netrc', 'w'):
         pass
